@@ -1,20 +1,55 @@
-const express = require('express');
-const bodyParser = require('body-parser')
-const path = require('path');
-const app = express();
+var express = require('express');
+var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var path = require('path');
+var app = express();
+var router = express.Router();
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var port = process.env.API_PORT || 8080;
+//set our port to either a predetermined port number if you have set it up, or 3001
+app.set("port", process.env.PORT || 3001);
 
-app.use(express.static(path.join(__dirname, 'build')));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
 
-app.get('/*', function (req, res) {
-   res.sendFile(path.join(__dirname, 'build', 'index.html'));
- });
+//db config
+var mongoDB = 'mongodb://awhite:asby1!@ds161026.mlab.com:61026/asbestos_trust_db';
+mongoose.connect(mongoDB);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-// app.listen(process.env.PORT || 8080);
+//body parsing
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-console.log("server is running!");
+// allow cross-browser
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+});
+// handling static assets
+// app.use(express.static(path.join(__dirname, 'build')));
 
-app.listen(port, function() {
-  console.log(`api running on port ${port}`);
+// api handling
+var TrustsSchema = new Schema({
+  id: String,
+  name: String
+});
+
+var Trust = mongoose.model('Trust', TrustsSchema);
+
+
+app.get("/api/trusts", (req, res) => {
+      Trust.find(function(err, trusts) {
+        if (err) {
+          res.send(err);
+        }
+        res.json(trusts)
+      });
+});
+
+app.listen(app.get("port"), () => {
+  console.log(`Find the server at: http://localhost:${app.get("port")}/`); // eslint-disable-line no-console
 });
