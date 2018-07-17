@@ -18,7 +18,10 @@ class Mainpage extends Component {
 	      .then(res => {
 	        this.setState({trusts: res.data});
 	      })
-	      .catch(console.error);
+	      .catch(error => {
+	      	console.log(error);
+	      	console.log("not working girl");
+	      });
 	}
 
 	listTrusts () {
