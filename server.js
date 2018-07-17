@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(cors());
 
 //db config
-var mongoDB = 'mongodb://awhite:asby1!@ds161026.mlab.com:61026/asbestos_trust_db';
+var mongoDB = 'mongodb://aewhite:asby1!@ds233531.mlab.com:33531/heroku_qcqkg4p2';
 mongoose.connect(mongoDB);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));

@@ -24,8 +24,8 @@ class Mainpage extends Component {
 	listTrusts () {
 		const trusts = this.state.trusts || [];
 		let trustsList = [];
-		trusts.map(trust => {
-			trustsList.push(<li>{trust.name}</li>)
+		trusts.map((trust, index) => {
+			trustsList.push(<li key={index}>{trust.name}</li>)
 		});
 		console.log("trustsList", trustsList);
 		return trustsList;
