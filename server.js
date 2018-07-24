@@ -43,6 +43,40 @@ app.get("/api/trusts", (req, res) => {
       });
 });
 
+var SitesSchema = new Schema({
+  trust_id: Schema.ObjectId,
+  name: {type: String},
+  city: {type: String},
+  state: {type: String},
+  country: {type: String},
+  start_date: {type: Date, default: '1/1/1900'},
+  end_date: {type: Date, default: '12/31/2017'},
+  site_code: {type: String},
+  category: String,
+  direction: String,
+  narrowedTrustId: Schema.ObjectId
+});
+
+var Site = mongoose.model('Site', SitesSchema);
+
+app.get("/api/sites", (req, res) => {
+      Site.find({"city": "LITTLE ROCK"}, function(err, sites) {
+
+        if (err) {
+          res.send(err);
+        }
+        var trustList = [];
+
+        var narrowedSiteCount = 1;
+        
+        var unnarrowedSiteCount = 1;
+
+        var data = { sites: sites, trustList: trustList, narrowedSiteCount: narrowedSiteCount, unnarrowedSiteCount: unnarrowedSiteCount };
+
+        res.json(data);
+      });
+});
+
 var server = app.listen(process.env.PORT || 3001, function () {
   var port = server.address().port;
   console.log("Express is working on port " + port);
