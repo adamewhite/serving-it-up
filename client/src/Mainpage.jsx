@@ -64,7 +64,7 @@ class Mainpage extends Component {
 
 	listSites () {
 		const sites = this.state.sites || [];
-		console.log("sites", sites);
+		console.log("sitesList", sites);
 		let sitesList = [];
 		sites.map((site, index) => {
 			sitesList.push(<li key={index}>{site.name} - {site.trust_id}</li>)
@@ -74,6 +74,7 @@ class Mainpage extends Component {
 	}
 
 	render () {
+		console.log("sites state", this.state.sites);
 		return (<div>
 							<h1>You made it to the Mainpage!</h1>
 							<h1>Sites!</h1>
